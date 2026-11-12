@@ -1,4 +1,3 @@
-
 import requests
 import base64
 import time
@@ -6,10 +5,20 @@ import json
 import sys
 import os
 import subprocess
-import configs
 
 
-CONFIG_FILE = "dataops_config.json"
+# Use dataops_config.json from the user's repo if present,
+# otherwise fall back to the one bundled with this action.
+_bundled = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "dataops_config.json"
+)
+
+CONFIG_FILE = (
+    "dataops_config.json"
+    if os.path.isfile("dataops_config.json")
+    else _bundled
+)
 
 with open(CONFIG_FILE, "r", encoding="utf-8") as f:
     APP_CONFIG = json.load(f)
@@ -28,10 +37,11 @@ MAX_WAIT_TIME = APP_CONFIG.get("max_wait_time", 3600)
 
 def get_access_token():
 
-    client_id = configs.DATAOPS_CLIENT_ID
-    client_secret = configs.DATAOPS_CLIENT_SECRET
-    username = configs.DATAOPS_USERNAME
-    password = configs.DATAOPS_PASSWORD
+    # Credentials come from GitHub secrets via environment variables
+    client_id = os.environ["DATAOPS_CLIENT_ID"]
+    client_secret = os.environ["DATAOPS_CLIENT_SECRET"]
+    username = os.environ["DATAOPS_USERNAME"]
+    password = os.environ["DATAOPS_PASSWORD"]
 
     # Authentication URL uses the configured environment domain
     auth_url = (
@@ -162,7 +172,6 @@ def call_api(method, url, token, params=None, payload=None):
 
 def extract_response_value(response_data, field_paths):
 
-
     for field_path in field_paths:
 
         value = get_json_value(
@@ -237,7 +246,6 @@ def poll_status(
             return status
 
         time.sleep(POLL_INTERVAL)
-
 
 
 def trigger_object(token, object_type, json_file):
@@ -352,7 +360,6 @@ def trigger_object(token, object_type, json_file):
     print(f"{object_type} completed successfully")
 
     return run_id, final_status
-
 
 
 def get_changed_files():
