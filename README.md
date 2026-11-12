@@ -1,4 +1,3 @@
-<img width="1919" height="1158" alt="image" src="https://github.com/user-attachments/assets/96a951a5-dfae-4667-9def-7a38f90cf8f9" /># dataops-suite-action
 
 # Datagaps DataOps Suite Trigger
 
