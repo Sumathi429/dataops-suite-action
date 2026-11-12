@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: Sumathi429/dataops-suite-action@v1.0.0.
+      - uses: Sumathi429/dataops-suite-action@v1.0.0
         with:
           client-id: ${{ secrets.DATAOPS_CLIENT_ID }}
           client-secret: ${{ secrets.DATAOPS_CLIENT_SECRET }}
