@@ -1,4 +1,0 @@
-DATAOPS_CLIENT_ID = "dataopssuite-restapi-client"
-DATAOPS_CLIENT_SECRET = "kTArWx$m"
-DATAOPS_USERNAME = "sumathi.knsvr"
-DATAOPS_PASSWORD = "U2FsdGVkX1+lDBAP/OlFL3GV+mCGRIoCpGPjo9f2PWc="
