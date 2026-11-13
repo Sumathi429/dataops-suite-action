@@ -1,0 +1,100 @@
+name: "Datagaps DataOps Suite Trigger"
+description: "Trigger Datagaps DataOps Pipelines, Dataflows, DB Flows and Data Models and wait for completion"
+author: "Sumathi429"
+
+branding:
+  icon: "play-circle"
+  color: "blue"
+
+inputs:
+  base_url:
+    description: "DataOps base URL"
+    required: true
+  client_id:
+    description: "OAuth client ID"
+    required: true
+  client_secret:
+    description: "OAuth client secret"
+    required: true
+  username:
+    description: "DataOps username"
+    required: true
+  password:
+    description: "DataOps password"
+    required: true
+  pipeline_id:
+    description: "Pipeline ID"
+    required: false
+    default: "NA"
+  dataflow_id:
+    description: "Dataflow ID"
+    required: false
+    default: "NA"
+  dbflow_id:
+    description: "DB Flow ID"
+    required: false
+    default: "NA"
+  datamodel_id:
+    description: "Data Model ID"
+    required: false
+    default: "NA"
+  group_id:
+    description: "Data Model group ID"
+    required: false
+    default: "NA"
+  datasource_id:
+    description: "Data source ID"
+    required: false
+    default: "NA"
+  work_schema_id:
+    description: "Work schema ID"
+    required: false
+    default: "NA"
+  parallel_rules:
+    description: "Parallel rules"
+    required: false
+    default: "NA"
+  sample_result_count:
+    description: "Sample result count"
+    required: false
+    default: "NA"
+  failure_file_location:
+    description: "Failure file location"
+    required: false
+    default: "NA"
+  max_failure_records:
+    description: "Maximum failure records"
+    required: false
+    default: "NA"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      shell: bash
+      run: pip install -r "${{ github.action_path }}/requirements.txt"
+
+    - name: Run DataOps trigger
+      shell: bash
+      env:
+        BASE_URL: ${{ inputs.base_url }}
+        DATAOPS_CLIENT_ID: ${{ inputs.client_id }}
+        DATAOPS_CLIENT_SECRET: ${{ inputs.client_secret }}
+        DATAOPS_USERNAME: ${{ inputs.username }}
+        DATAOPS_PASSWORD: ${{ inputs.password }}
+        PIPELINE_ID: ${{ inputs.pipeline_id }}
+        DATAFLOW_ID: ${{ inputs.dataflow_id }}
+        DBFLOW_ID: ${{ inputs.dbflow_id }}
+        DATAMODEL_ID: ${{ inputs.datamodel_id }}
+        GROUP_ID: ${{ inputs.group_id }}
+        DATASOURCE_ID: ${{ inputs.datasource_id }}
+        WORK_SCHEMA_ID: ${{ inputs.work_schema_id }}
+        PARALLEL_RULES: ${{ inputs.parallel_rules }}
+        SAMPLE_RESULT_COUNT: ${{ inputs.sample_result_count }}
+        FAILURE_FILE_LOCATION: ${{ inputs.failure_file_location }}
+        MAX_FAILURE_RECORDS: ${{ inputs.max_failure_records }}
+      run: python "${{ github.action_path }}/trigger_objects.py"
