@@ -1,0 +1,113 @@
+
+name: Run DataOps Automation
+
+on:
+  workflow_dispatch:
+    inputs:
+
+      DATAFLOW_ID:
+        description: "Enter Dataflow ID (leave NA if not required)"
+        required: false
+        default: "NA"
+        type: string
+
+      DBFLOW_ID:
+        description: "Enter DB Flow ID"
+        required: false
+        default: "NA"
+        type: string
+
+      PIPELINE_ID:
+        description: "Enter Pipeline ID"
+        required: false
+        default: "NA"
+        type: string
+
+      DATAMODEL_ID:
+        description: "Enter Data Model ID"
+        required: false
+        default: "NA"
+        type: string
+
+      GROUP_ID:
+        description: "Data Model Group ID"
+        required: false
+        default: "NA"
+        type: string
+
+      DATASOURCE_ID:
+        description: "Data Source ID"
+        required: false
+        default: "NA"
+        type: string
+
+      WORK_SCHEMA_ID:
+        description: "Work Schema ID"
+        required: false
+        default: "NA"
+        type: string
+
+      PARALLEL_RULES:
+        description: "Parallel Rules"
+        required: false
+        default: "NA"
+        type: string
+
+      SAMPLE_RESULT_COUNT:
+        description: "Sample Result Count"
+        required: false
+        default: "NA"
+        type: string
+
+      FAILURE_FILE_LOCATION:
+        description: "Failure File Location"
+        required: false
+        default: "NA"
+        type: string
+
+      MAX_FAILURE_RECORDS:
+        description: "Maximum Failure Records"
+        required: false
+        default: "NA"
+        type: string
+
+jobs:
+  run-dataops:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run DataOps Automation
+        env:
+          DATAOPS_CLIENT_ID: ${{ secrets.DATAOPS_CLIENT_ID }}
+          DATAOPS_CLIENT_SECRET: ${{ secrets.DATAOPS_CLIENT_SECRET }}
+          DATAOPS_USERNAME: ${{ secrets.DATAOPS_USERNAME }}
+          DATAOPS_PASSWORD: ${{ secrets.DATAOPS_PASSWORD }}
+
+          DATAFLOW_ID: ${{ inputs.DATAFLOW_ID }}
+          DBFLOW_ID: ${{ inputs.DBFLOW_ID }}
+          PIPELINE_ID: ${{ inputs.PIPELINE_ID }}
+          DATAMODEL_ID: ${{ inputs.DATAMODEL_ID }}
+
+          GROUP_ID: ${{ inputs.GROUP_ID }}
+          DATASOURCE_ID: ${{ inputs.DATASOURCE_ID }}
+          WORK_SCHEMA_ID: ${{ inputs.WORK_SCHEMA_ID }}
+          PARALLEL_RULES: ${{ inputs.PARALLEL_RULES }}
+          SAMPLE_RESULT_COUNT: ${{ inputs.SAMPLE_RESULT_COUNT }}
+          FAILURE_FILE_LOCATION: ${{ inputs.FAILURE_FILE_LOCATION }}
+          MAX_FAILURE_RECORDS: ${{ inputs.MAX_FAILURE_RECORDS }}
+
+        run: python trigger_dataflow.py
