@@ -5,7 +5,7 @@ import sys
 import time
 import requests
 
-BASE_URL = "https://poc.datagaps.com".rstrip("/")
+BASE_URL = os.getenv("BASE_URL")
 
 DATAFLOW_ID = os.getenv("DATAFLOW_ID", "NA")
 DBFLOW_ID = os.getenv("DBFLOW_ID", "NA")
