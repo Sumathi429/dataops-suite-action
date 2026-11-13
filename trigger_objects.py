@@ -1,11 +1,10 @@
-
 import base64
 import os
 import sys
 import time
 import requests
 
-BASE_URL = os.getenv("BASE_URL")
+BASE_URL = os.getenv("BASE_URL", "").strip().rstrip("/")
 
 DATAFLOW_ID = os.getenv("DATAFLOW_ID", "NA")
 DBFLOW_ID = os.getenv("DBFLOW_ID", "NA")
@@ -339,6 +338,13 @@ def run_datamodel(token):
 
 
 def main():
+
+    if not BASE_URL.lower().startswith(("http://", "https://")):
+        print(
+            "BASE_URL must start with http:// or https:// "
+            "(e.g. https://poc.datagaps.com)"
+        )
+        sys.exit(1)
 
     jobs = []
 
