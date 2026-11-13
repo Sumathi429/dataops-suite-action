@@ -110,4 +110,4 @@ jobs:
           FAILURE_FILE_LOCATION: ${{ inputs.FAILURE_FILE_LOCATION }}
           MAX_FAILURE_RECORDS: ${{ inputs.MAX_FAILURE_RECORDS }}
 
-        run: python trigger_dataflow.py
+        run: python trigger_objects.py
