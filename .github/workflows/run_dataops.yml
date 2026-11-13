@@ -5,6 +5,11 @@ on:
   workflow_dispatch:
     inputs:
 
+      BASE_URL : 
+        description: "Enter Base URL"
+        required: true
+        type: string
+        
       DATAFLOW_ID:
         description: "Enter Dataflow ID (leave NA if not required)"
         required: false
