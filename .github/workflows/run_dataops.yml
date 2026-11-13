@@ -1,15 +1,14 @@
-
 name: Run DataOps Automation
 
 on:
   workflow_dispatch:
     inputs:
 
-      BASE_URL : 
+      BASE_URL:
         description: "Enter Base URL"
         required: true
         type: string
-        
+
       DATAFLOW_ID:
         description: "Enter Dataflow ID (leave NA if not required)"
         required: false
@@ -97,6 +96,8 @@ jobs:
 
       - name: Run DataOps Automation
         env:
+          BASE_URL: ${{ inputs.BASE_URL }}
+
           DATAOPS_CLIENT_ID: ${{ secrets.DATAOPS_CLIENT_ID }}
           DATAOPS_CLIENT_SECRET: ${{ secrets.DATAOPS_CLIENT_SECRET }}
           DATAOPS_USERNAME: ${{ secrets.DATAOPS_USERNAME }}
