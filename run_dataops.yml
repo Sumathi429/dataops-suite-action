@@ -1,0 +1,78 @@
+name: Run DataOps Suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Base URL"
+        required: true
+      pipeline_id:
+        description: "Pipeline ID"
+        required: false
+        default: "NA"
+      dataflow_id:
+        description: "Dataflow ID"
+        required: false
+        default: "NA"
+      dbflow_id:
+        description: "DB Flow ID"
+        required: false
+        default: "NA"
+      datamodel_id:
+        description: "Data Model ID"
+        required: false
+        default: "NA"
+      group_id:
+        description: "Data Model - Group ID"
+        required: false
+        default: "NA"
+      datasource_id:
+        description: "Data Model - Datasource ID"
+        required: false
+        default: "NA"
+      work_schema_id:
+        description: "Data Model - Work Schema ID"
+        required: false
+        default: "NA"
+      parallel_rules:
+        description: "Data Model - Parallel Rules"
+        required: false
+        default: "NA"
+      sample_result_count:
+        description: "Data Model - Sample Result Count"
+        required: false
+        default: "NA"
+      failure_file_location:
+        description: "Data Model - Failure File Location"
+        required: false
+        default: "NA"
+      max_failure_records:
+        description: "Data Model - Max Failure Records"
+        required: false
+        default: "NA"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger DataOps objects
+        uses: ./
+        with:
+          base_url: ${{ inputs.base_url }}
+          client_id: ${{ secrets.DATAOPS_CLIENT_ID }}
+          client_secret: ${{ secrets.DATAOPS_CLIENT_SECRET }}
+          username: ${{ secrets.DATAOPS_USERNAME }}
+          password: ${{ secrets.DATAOPS_PASSWORD }}
+          pipeline_id: ${{ inputs.pipeline_id }}
+          dataflow_id: ${{ inputs.dataflow_id }}
+          dbflow_id: ${{ inputs.dbflow_id }}
+          datamodel_id: ${{ inputs.datamodel_id }}
+          group_id: ${{ inputs.group_id }}
+          datasource_id: ${{ inputs.datasource_id }}
+          work_schema_id: ${{ inputs.work_schema_id }}
+          parallel_rules: ${{ inputs.parallel_rules }}
+          sample_result_count: ${{ inputs.sample_result_count }}
+          failure_file_location: ${{ inputs.failure_file_location }}
+          max_failure_records: ${{ inputs.max_failure_records }}
