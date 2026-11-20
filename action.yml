@@ -1,45 +1,28 @@
 name: 'Datagaps DataOps Suite Trigger'
-description: 'Trigger Datagaps dataflows, pipelines and DB flows by ID, wait for results, and publish a summary table.'
-author: 'Sumathi429'
+description: 'Trigger Datagaps objects by ID and show a summary table.'
 branding:
   icon: 'check-circle'
   color: 'blue'
 
 inputs:
   base-url:
-    description: 'Datagaps DataOps Suite base URL'
+    description: 'Datagaps DataOps Suite URL'
     required: true
   token:
-    description: 'API token (store as a GitHub secret)'
+    description: 'Datagaps API token'
     required: true
   dataflow-ids:
-    description: 'Comma-separated dataflow IDs'
+    description: 'Dataflow IDs (comma-separated)'
     required: false
     default: ''
   pipeline-ids:
-    description: 'Comma-separated pipeline IDs'
+    description: 'Pipeline IDs (comma-separated)'
     required: false
     default: ''
   dbflow-ids:
-    description: 'Comma-separated DB flow IDs'
+    description: 'DB flow IDs (comma-separated)'
     required: false
     default: ''
-  poll-interval:
-    description: 'Seconds between status checks'
-    required: false
-    default: '10'
-  timeout:
-    description: 'Max seconds to wait per run'
-    required: false
-    default: '1800'
-  fail-on-failure:
-    description: 'Fail the workflow if any run fails'
-    required: false
-    default: 'true'
-  mock:
-    description: 'Use simulated results (for testing the output format only)'
-    required: false
-    default: 'false'
 
 runs:
   using: composite
@@ -47,29 +30,13 @@ runs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-
-    - name: Install dependencies
-      shell: bash
+    - shell: bash
       run: pip install -r "${{ github.action_path }}/requirements.txt"
-
-    - name: Trigger Datagaps objects
-      shell: bash
+    - shell: bash
       env:
         DG_BASE_URL: ${{ inputs.base-url }}
         DG_TOKEN: ${{ inputs.token }}
         DG_DATAFLOW_IDS: ${{ inputs.dataflow-ids }}
         DG_PIPELINE_IDS: ${{ inputs.pipeline-ids }}
         DG_DBFLOW_IDS: ${{ inputs.dbflow-ids }}
-        DG_POLL_INTERVAL: ${{ inputs.poll-interval }}
-        DG_TIMEOUT: ${{ inputs.timeout }}
-        DG_FAIL_ON_FAILURE: ${{ inputs.fail-on-failure }}
-        DG_MOCK: ${{ inputs.mock }}
       run: python "${{ github.action_path }}/trigger_objects.py"
-
-    - name: Upload report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: datagaps-report
-        path: datagaps-report.json
-        if-no-files-found: ignore
