@@ -281,7 +281,6 @@ def write_table(rows, ok):
         "datagaps-validate summary", "",
         f"## Datagaps validation: {'✅ PASSED' if ok else '❌ FAILED'}", "",
         "| Type | ID | Run | Status | Checks passed | Duration |",
-        "|---|---|---|---|---|---|",
     ]
     for r in rows:
         lines.append(f"| {r['type']} | {r['id']} | {r['run']} | {r['status']} "
